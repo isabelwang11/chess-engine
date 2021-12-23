@@ -34,7 +34,9 @@ class Board {
 
         void resetBoard() {
             Color white(1);
-            boxes[0] = new Square(new Rook(white), 0, 0);
+            Rook r(white);
+            Square s(&r, 0, 0);
+            boxes[0] = s;
             boxes[1] = new Square(new Knight(white), 0, 1);
             boxes[2] = new Square(new Bishop(white), 0, 2);
             boxes[3] = new Square(new Queen(white), 0, 3);
