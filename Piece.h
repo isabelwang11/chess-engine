@@ -3,147 +3,128 @@
 
 #include <string>
 
-enum PieceType {
-    None = 0,
-    Pawn = 1,
-    // wPawn = 1,
-    // bPawn = 2,
-    Knight = 3,
-    Bishop = 4,
-    Rook = 5,
-    Queen = 6,
-    King = 7,
-};
-
-enum PieceCode {
-    Empty = PieceType::None,
-    wPawn = PieceType::Pawn,
-    wOff = PieceType::Pawn,
-    wKnight = PieceType::Knight,
-    wBishop = PieceType::Bishop,
-    wRook = PieceType::Rook,
-    wQueen = PieceType::Queen,
-    wKing = PieceType::King,
-
-    blackY = 8,
-    bPawn = PieceType::Pawn + blackY,
-    bOff = PieceType::Pawn + blackY,
-    bKnight = PieceType::Knight + blackY,
-    bBishop = PieceType::Bishop + blackY,
-    bRook = PieceType::Rook + blackY,
-    bQueen = PieceType::Queen + blackY,
-    bKing = PieceType::King + blackY,
-};
-
 class Color {
     private:
-        int r;
-        int g;
-        int b;
+        int r, g, b; // r, g, b can only be 0 or 1
     public:
-        Color(int r_in, int g_in, int b_in);
+        Color()
+        : r(1), g(1), b(1) {} // white
+
+        Color(int n) // n = 0, 1
+        : r(n), g(n), b(n) {}
+
+        Color(int r_in, int g_in, int b_in)
+        : r(r_in), g(g_in), b(b_in) {}
+
+        bool isWhite() {
+            if(r == 1 && g == 1 && b == 1) {
+                return true;
+            }
+            return false;
+        }
 };
 
 class Piece {
     protected:
         static const char symbol = ' ';
         static const int value = 0;
-        static const PieceType pieceType = PieceType::None;
+        bool captured = false;
+        bool white;
     public:
         Color color; // black(0) or white(1)
 
         Piece(Color &color_in)
-        : color(color_in) {}
+        : color(color_in) {
+            if(color.isWhite()) {
+                white = true;
+            }
+            else{ white = false; }
+        }
 
         virtual char getSymbol() { return symbol; }
         virtual int getValue() { return value; }
-        virtual PieceType getPieceType() { return pieceType; }
+        bool isCaptured() { return captured; }
+        bool isWhite() { return white; }
+        void setCaptured(bool c) {
+            captured = c;
+        }
 };
 
 class Pawn : public Piece {
     private:
         static const char symbol = 'P';
         static const int value = 1;
-        static const PieceType pieceType = PieceType::Pawn;
-        // bool first_move = true;
-        // bool en_passant;
     public:
         Pawn(Color &color_in)
         : Piece(color_in) {}
 
         char getSymbol() override { return symbol; }
         int getValue() override { return value; }
-        PieceType getPieceType() override { return pieceType; }
 };
 
 class King : public Piece {
     private:
         static const char symbol = 'K';
         static const int value = 0;
-        static const PieceType pieceType = PieceType::King;
+        bool castled = false;
     public:
         King(Color &color_in)
         : Piece(color_in) {}
 
         char getSymbol() override { return symbol; }
         int getValue() override { return value; }
-        PieceType getPieceType() override { return pieceType; }
+        bool isCastled() { return castled; }
+        bool setCastled(bool c) {
+            castled = c;
+        }
 };
 
 class Queen : public Piece {
     private:
         static const char symbol = 'Q';
         static const int value = 9;
-        static const PieceType pieceType = PieceType::Queen;
     public:
         Queen(Color &color_in)
         : Piece(color_in) {}
 
         char getSymbol() override { return symbol; }
         int getValue() override { return value; }
-        PieceType getPieceType() override { return pieceType; }
 };
 
 class Rook : public Piece {
     private:
         static const char symbol = 'R';
         static const int value = 5;
-        static const PieceType pieceType = PieceType::Rook;
     public:
         Rook(Color &color_in)
         : Piece(color_in) {}
 
         char getSymbol() override { return symbol; }
         int getValue() override { return value; }
-        PieceType getPieceType() override { return pieceType; }
 };
 
 class Bishop : public Piece {
     private:
         static const char symbol = 'B';
         static const int value = 3;
-        static const PieceType pieceType = PieceType::Bishop;
     public:
         Bishop(Color &color_in)
         : Piece(color_in) {}
 
         char getSymbol() override { return symbol; }
         int getValue() override { return value; }
-        PieceType getPieceType() override { return pieceType; }
 };
 
 class Knight : public Piece {
     private:
         static const char symbol = 'N';
         static const int value = 3;
-        static const PieceType pieceType = PieceType::Knight;
     public:
         Knight(Color &color_in)
         : Piece(color_in) {}
-        
+
         char getSymbol() override { return symbol; }
         int getValue() override { return value; }
-        PieceType getPieceType() override { return pieceType; }
 };
 
 #endif PIECE_H
