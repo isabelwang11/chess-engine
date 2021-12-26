@@ -43,9 +43,9 @@ class Piece {
 
         virtual char getSymbol() { return symbol; }
         virtual int getValue() { return value; }
-        bool isCaptured() { return captured; }
-        bool isWhite() { return white; }
-        void setCaptured(bool c) {
+        virtual bool isCaptured() { return captured; }
+        virtual bool isWhite() { return white; }
+        virtual void setCaptured(bool c) {
             captured = c;
         }
 };
