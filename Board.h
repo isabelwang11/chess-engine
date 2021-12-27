@@ -11,9 +11,6 @@ class Square {
     public:
         Square()
         : x(0), y(0), p(nullptr) {}
-        
-        Square(Piece *piece_in, int &x_in, int &y_in)
-        : x(x_in), y(y_in), p(piece_in) {}
 
         Piece * getPiece() {
             return p;
